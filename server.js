@@ -12,8 +12,8 @@ const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
     origin: process.env.NODE_ENV === "production" 
-      ? ["https://web-production-cc36.up.railway.app", "https://*.vercel.app"] 
-      : ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
+      ? ["https://video-call-frontend-eta.vercel.app"]  // Your exact Vercel URL
+      : ["http://localhost:3000", "http://localhost:3001"],
     methods: ["GET", "POST"],
     credentials: true
   }
