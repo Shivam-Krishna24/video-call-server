@@ -8,19 +8,40 @@ require('dotenv').config();
 const app = express();
 const server = http.createServer(app);
 
-// Configure CORS for production
+// Configure CORS for production - MORE PERMISSIVE VERSION
 const io = socketIo(server, {
   cors: {
-    origin: process.env.NODE_ENV === "production" 
-      ? ["https://video-call-frontend-eta.vercel.app"]  // Your exact Vercel URL
-      : ["http://localhost:3000", "http://localhost:3001"],
+    origin: function (origin, callback) {
+      // Allow all origins for now (you can restrict this later)
+      return callback(null, true);
+      
+      /* LATER: Replace with specific origins
+      const allowedOrigins = [
+        "https://video-call-frontend-eta.vercel.app",
+        "http://localhost:3000",
+        "http://localhost:3001"
+      ];
+      
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+      */
+    },
     methods: ["GET", "POST"],
     credentials: true
   }
 });
 
-// Middleware
-app.use(cors());
+// Middleware - UPDATE THIS TOO
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow all origins for now
+    return callback(null, true);
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 // Serve static files from client in production
